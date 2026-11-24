@@ -23,6 +23,12 @@ def main() -> None:
     os.makedirs("/output", exist_ok=True)
     with open("/output/entry.txt", "w", encoding="utf-8") as f:
         f.write(LINE + "\n")
+    # Read back what was written: the scored artifact is the file, not
+    # the in-memory string, so verify the file itself is one valid line.
+    with open("/output/entry.txt", encoding="utf-8") as f:
+        written = f.read()
+    assert written == LINE + "\n", "entry.txt must hold exactly the line"
+    assert 1 <= len(written.rstrip("\n")) <= 200
 
 
 if __name__ == "__main__":
